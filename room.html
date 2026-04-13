@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop by Room — Nestled</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="disclosure-bar">
+    This site contains affiliate links. We may earn a small commission at no extra cost to you.
+  </div>
+
+  <header class="site-header">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">Nestled</a>
+      <nav class="main-nav">
+        <a href="index.html#shop-by-room">Shop by Room</a>
+        <a href="index.html#featured">Featured</a>
+        <a href="blog.html">Décor Tips</a>
+        <a href="index.html#about">About</a>
+      </nav>
+      <button class="nav-toggle" aria-label="Toggle menu">&#9776;</button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="index.html#shop-by-room">Shop by Room</a>
+      <a href="index.html#featured">Featured</a>
+      <a href="blog.html">Décor Tips</a>
+      <a href="index.html#about">About</a>
+    </div>
+  </header>
+
+  <!-- Room hero — filled by JS -->
+  <div class="room-page-hero">
+    <div class="container">
+      <h1 id="roomTitle">Loading...</h1>
+      <p id="roomDesc"></p>
+    </div>
+  </div>
+
+  <section class="room-products-section">
+    <div class="container">
+      <a href="index.html#shop-by-room" class="back-link">← All Rooms</a>
+      <div class="product-grid" id="roomProductGrid">
+        <!-- Products injected by JS -->
+      </div>
+      <div id="emptyMsg" style="display:none; text-align:center; padding:64px 0; color:var(--text-muted);">
+        <p style="font-size:18px;">More products coming soon for this room!</p>
+        <a href="index.html#featured" class="btn-secondary" style="margin-top:20px;">Browse All Featured</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="newsletter-section">
+    <div class="container newsletter-inner">
+      <div>
+        <h2>Get cozy in your inbox.</h2>
+        <p>New finds, seasonal styling ideas, and apartment tips — delivered gently.</p>
+      </div>
+      <form class="newsletter-form" id="newsletterForm">
+        <input type="email" placeholder="your@email.com" required aria-label="Email address" />
+        <button type="submit" class="btn-primary">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo">Nestled</span>
+        <p>Curated apartment décor for every style and budget.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Shop</h4>
+        <a href="room.html?room=living">Living Room</a>
+        <a href="room.html?room=bedroom">Bedroom</a>
+        <a href="room.html?room=kitchen">Kitchen & Dining</a>
+        <a href="room.html?room=bathroom">Bathroom</a>
+      </div>
+      <div class="footer-links">
+        <h4>Info</h4>
+        <a href="blog.html">Décor Tips</a>
+        <a href="index.html#about">About</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="disclosure.html">Affiliate Disclosure</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Nestled. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="products.js"></script>
+  <script src="main.js"></script>
+  <script>
+    /* Read ?room= from URL and filter products */
+    const params = new URLSearchParams(window.location.search);
+    const roomKey = params.get('room') || 'living';
+    const roomData = ROOMS[roomKey] || { label: 'Shop', desc: '' };
+
+    document.title = `${roomData.label} — Nestled`;
+    document.getElementById('roomTitle').textContent = roomData.label;
+    document.getElementById('roomDesc').textContent = roomData.desc;
+
+    const roomProducts = PRODUCTS.filter(p => p.room === roomKey);
+    const grid = document.getElementById('roomProductGrid');
+
+    function renderProductCard(product) {
+      return `
+        <div class="product-card">
+          <div class="product-img">
+            <img src="${product.image}" alt="${product.name}" loading="lazy" />
+            ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+          </div>
+          <div class="product-info">
+            <p class="product-room">${product.roomLabel}</p>
+            <h3 class="product-name">${product.name}</h3>
+            <p class="product-desc">${product.description}</p>
+            <div class="product-footer">
+              <span class="product-price">${product.price}</span>
+              <a href="${product.affiliateUrl}" target="_blank" rel="noopener noreferrer sponsored" class="btn-shop">
+                Shop on Amazon
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    if (roomProducts.length > 0) {
+      grid.innerHTML = roomProducts.map(renderProductCard).join('');
+    } else {
+      document.getElementById('emptyMsg').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
