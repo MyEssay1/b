@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Decromy — Apartment Décor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--tc:#B5623E;--tc-dk:#8C4A2F;--cream:#F7F3EE;--sand:#E8DDD0;--tan:#C9B49A;--bark:#6B4C38;--esp:#2E1F14;--ww:#FDFAF7;--tm:#2E1F14;--tmm:#7A6558;--tl:#A8948A;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Jost',sans-serif;background:var(--ww);color:var(--tm);font-size:16px;line-height:1.7;}
+    h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:500;line-height:1.2;}
+    img{display:block;width:100%;height:100%;object-fit:cover;}
+    a{color:inherit;text-decoration:none;}
+    .container{max-width:1200px;margin:0 auto;padding:0 24px;}
+    .disc{background:var(--sand);text-align:center;font-size:12px;color:var(--tmm);padding:8px 24px;letter-spacing:.02em;}
+    .site-nav{background:var(--ww);border-bottom:1px solid var(--sand);position:sticky;top:0;z-index:100;}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;height:68px;}
+    .logo{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--esp);letter-spacing:.04em;cursor:pointer;}
+    .nav-links{display:flex;gap:32px;}
+    .nav-links button{background:none;border:none;font-family:'Jost',sans-serif;font-size:13px;color:var(--tmm);letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:.2s;padding:4px 0;}
+    .nav-links button:hover,.nav-links button.active{color:var(--tc);}
+    .nav-toggle{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--esp);}
+    .mobile-nav{display:none;flex-direction:column;padding:16px 24px;gap:16px;border-top:1px solid var(--sand);background:var(--ww);}
+    .mobile-nav button{background:none;border:none;font-family:'Jost',sans-serif;font-size:14px;color:var(--tmm);text-transform:uppercase;letter-spacing:.06em;cursor:pointer;text-align:left;}
+    .mobile-nav.open{display:flex;}
+    .page{display:none;}.page.active{display:block;}
+    .btn-p{display:inline-block;background:var(--tc);color:#fff;padding:13px 30px;border-radius:6px;font-family:'Jost',sans-serif;font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;border:none;cursor:pointer;transition:.2s;}
+    .btn-p:hover{background:var(--tc-dk);}
+    .btn-s{display:inline-block;border:1.5px solid var(--bark);color:var(--bark);padding:12px 28px;border-radius:6px;font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;background:none;cursor:pointer;transition:.2s;font-family:'Jost',sans-serif;}
+    .btn-s:hover{background:var(--bark);color:#fff;}
+    .home-layout{display:grid;grid-template-columns:320px 1fr;min-height:calc(100vh - 68px);}
+    .hero-txt{background:var(--cream);display:flex;flex-direction:column;justify-content:center;padding:56px 36px;position:sticky;top:68px;height:calc(100vh - 68px);border-right:1px solid var(--sand);}
+    .eyebrow{font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--tc);margin-bottom:16px;}
+    .hero-txt h1{font-size:clamp(30px,2.8vw,46px);color:var(--esp);margin-bottom:20px;}
+    .hero-txt h1 em{font-style:italic;color:var(--tc);}
+    .hero-txt p{font-size:14px;color:var(--tmm);margin-bottom:28px;line-height:1.8;}
+    .home-right{overflow-y:auto;}
+    .shop-another{background:var(--cream);padding:56px 0;border-top:1px solid var(--sand);}
+    .shop-another .sec-head{margin-bottom:32px;}
+    .shop-another-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+    .shop-another-card{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:16/9;cursor:pointer;background:var(--sand);}
+    .shop-another-card::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(46,31,20,.6) 0%,transparent 55%);z-index:1;transition:.25s;}
+    .shop-another-card:hover::before{opacity:.85;}
+    .shop-another-card img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+    .shop-another-card:hover img{transform:scale(1.04);}
+    .shop-another-lbl{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:14px 16px;font-family:'Cormorant Garamond',serif;font-size:17px;color:#fff;}
+    .section{padding:96px 0;}.section-warm{background:var(--cream);}
+    .sec-head{text-align:center;margin-bottom:56px;}
+    .sec-head h2{font-size:clamp(32px,4vw,48px);color:var(--esp);margin-bottom:10px;}
+    .sec-head p{color:var(--tmm);}
+    .room-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+    .room-card{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:4/3;cursor:pointer;background:var(--sand);}
+    .room-card::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(46,31,20,.65) 0%,transparent 55%);z-index:1;transition:.25s;}
+    .room-card:hover::before{opacity:.85;}
+    .room-card img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+    .room-card:hover img{transform:scale(1.04);}
+    .room-lbl{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:24px;font-family:'Cormorant Garamond',serif;font-size:22px;color:#fff;}
+    .prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+    .prod-card{background:var(--ww);border-radius:12px;overflow:hidden;border:.5px solid var(--sand);transition:.25s;display:flex;flex-direction:column;}
+    .prod-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(46,31,20,.12);}
+    .prod-img{aspect-ratio:1;overflow:hidden;background:var(--sand);position:relative;}
+    .prod-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+    .prod-card:hover .prod-img img{transform:scale(1.05);}
+    .badge{position:absolute;top:12px;left:12px;background:var(--tc);color:#fff;font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:4px;}
+    .prod-info{padding:16px;flex:1;display:flex;flex-direction:column;}
+    .prod-room{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--tl);margin-bottom:6px;}
+    .prod-name{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--esp);margin-bottom:6px;line-height:1.3;}
+    .prod-desc{font-size:13px;color:var(--tmm);flex:1;margin-bottom:14px;line-height:1.6;}
+    .prod-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+    .prod-price{font-size:18px;font-weight:500;color:var(--bark);}
+    .btn-shop{background:var(--tc);color:#fff;font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:9px 16px;border-radius:5px;border:none;cursor:pointer;font-family:'Jost',sans-serif;transition:.2s;white-space:nowrap;}
+    .btn-shop:hover{background:var(--tc-dk);}
+    .about-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+    .about-img{border-radius:20px;overflow:hidden;aspect-ratio:4/5;}
+    .about-txt h2{font-size:clamp(30px,3.5vw,44px);color:var(--esp);margin-bottom:24px;line-height:1.25;}
+    .about-txt p{color:var(--tmm);margin-bottom:18px;font-size:16px;line-height:1.8;}
+    .about-txt p em{font-style:italic;color:var(--bark);}
+    .nl-sec{background:var(--bark);padding:72px 0;}
+    .nl-inner{display:flex;align-items:center;justify-content:space-between;gap:48px;}
+    .nl-inner h2{font-size:clamp(26px,3vw,38px);color:var(--cream);margin-bottom:8px;}
+    .nl-inner p{color:var(--tan);font-size:15px;}
+    .nl-form{display:flex;gap:12px;flex-shrink:0;}
+    .nl-form input{padding:13px 20px;border-radius:6px;border:none;background:rgba(255,255,255,.12);color:var(--cream);font-family:'Jost',sans-serif;font-size:15px;width:280px;outline:none;}
+    .nl-form input::placeholder{color:var(--tan);}
+    .nl-success{color:var(--cream);font-size:15px;padding:13px 0;}
+    .ft{background:var(--esp);padding:64px 0 0;}
+    .ft-inner{display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.08);}
+    .ft-brand p{margin-top:12px;color:var(--tl);font-size:14px;line-height:1.7;max-width:280px;}
+    .ft-brand .logo{color:var(--cream);}
+    .ft-col{display:flex;flex-direction:column;gap:10px;}
+    .ft-col h4{font-family:'Jost',sans-serif;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--tan);margin-bottom:4px;}
+    .ft-col button{background:none;border:none;font-family:'Jost',sans-serif;font-size:14px;color:var(--tl);cursor:pointer;text-align:left;transition:.2s;padding:0;}
+    .ft-col button:hover{color:var(--cream);}
+    .ft-bot{padding:20px 24px;text-align:center;}
+    .ft-bot p{font-size:12px;color:var(--tl);}
+    .room-hero{background:var(--cream);padding:64px 0 48px;text-align:center;}
+    .room-hero h1{font-size:clamp(36px,5vw,58px);color:var(--esp);}
+    .room-hero p{color:var(--tmm);margin-top:10px;}
+    .filter-wrap{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px;}
+    .filter-btn{padding:9px 20px;border-radius:6px;border:1.5px solid var(--bark);color:var(--bark);background:transparent;font-family:'Jost',sans-serif;font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:.2s;}
+    .filter-btn:hover{background:var(--bark);color:#fff;}
+    .filter-btn.active{background:var(--tc);border-color:var(--tc);color:#fff;}
+    .back-btn{background:none;border:none;font-family:'Jost',sans-serif;font-size:12px;color:var(--tmm);text-transform:uppercase;letter-spacing:.08em;cursor:pointer;margin-bottom:32px;display:inline-flex;align-items:center;gap:6px;}
+    .back-btn:hover{color:var(--tc);}
+    .blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
+    .blog-card{border-radius:12px;overflow:hidden;border:.5px solid var(--sand);transition:.25s;}
+    .blog-card:hover{transform:translateY(-4px);}
+    .blog-img{aspect-ratio:16/9;overflow:hidden;background:var(--sand);}
+    .blog-body{padding:20px;}
+    .blog-cat{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--tc);margin-bottom:8px;}
+    .blog-body h3{font-size:20px;color:var(--esp);margin-bottom:10px;line-height:1.3;}
+    .blog-body p{font-size:14px;color:var(--tmm);line-height:1.7;}
+    .toast{position:fixed;bottom:24px;right:24px;background:var(--bark);color:#fff;padding:14px 22px;border-radius:8px;font-size:14px;opacity:0;transition:.3s;pointer-events:none;z-index:999;font-family:'Jost',sans-serif;}
+    .toast.show{opacity:1;}
+    @media(max-width:1024px){.prod-grid{grid-template-columns:repeat(3,1fr);}}
+    @media(max-width:860px){.home-layout{grid-template-columns:1fr;}.hero-txt{position:relative;top:0;height:auto;padding:48px 24px;border-right:none;border-bottom:1px solid var(--sand);}.room-grid{grid-template-columns:repeat(2,1fr);}.about-layout{grid-template-columns:1fr;gap:40px;}.about-img{aspect-ratio:16/9;}.nl-inner{flex-direction:column;text-align:center;}.nl-form{flex-direction:column;width:100%;max-width:380px;}.nl-form input{width:100%;}.ft-inner{grid-template-columns:1fr 1fr;}.blog-grid{grid-template-columns:repeat(2,1fr);}.shop-another-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:600px){.nav-links{display:none;}.nav-toggle{display:block;}.prod-grid{grid-template-columns:repeat(2,1fr);gap:16px;}.room-grid{grid-template-columns:1fr 1fr;gap:12px;}.ft-inner{grid-template-columns:1fr;}.blog-grid{grid-template-columns:1fr;}.shop-another-grid{grid-template-columns:repeat(2,1fr);}}
+  </style>
+</head>
+<body>
+
+<div class="disc">This site contains affiliate links. We may earn a small commission at no extra cost to you.</div>
+
+<header class="site-nav">
+  <div class="container nav-inner">
+    <span class="logo" onclick="showPage('home')">Decromy</span>
+    <nav class="nav-links">
+      <button onclick="showPage('home')" id="nav-home" class="active">Home</button>
+      <button onclick="showPage('shop')" id="nav-shop">Shop by Room</button>
+      <button onclick="showPage('blog')" id="nav-blog">Décor Tips</button>
+      <button onclick="showPage('about')" id="nav-about">About</button>
+    </nav>
+    <button class="nav-toggle" onclick="toggleMobile()">&#9776;</button>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <button onclick="showPage('home');toggleMobile()">Home</button>
+    <button onclick="showPage('shop');toggleMobile()">Shop by Room</button>
+    <button onclick="showPage('blog');toggleMobile()">Décor Tips</button>
+    <button onclick="showPage('about');toggleMobile()">About</button>
+  </div>
+</header>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="home-layout">
+    <div class="hero-txt">
+      <p class="eyebrow">Curated for small spaces</p>
+      <h1>Your apartment,<br><em>beautifully lived in.</em></h1>
+      <p>Handpicked décor that turns any rental into a home — cozy, affordable, and entirely you.</p>
+      <button class="btn-p" onclick="showPage('shop')">Shop All</button>
+    </div>
+    <div class="home-right">
+      <section class="section">
+        <div class="container">
+          <div class="sec-head"><h2>Shop by Room</h2><p>Every corner of your apartment, thoughtfully styled.</p></div>
+          <div class="room-grid">
+            <div class="room-card" onclick="showRoom('living')"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=75" alt="Living Room"/><div class="room-lbl">Living Room</div></div>
+            <div class="room-card" onclick="showRoom('bedroom')"><img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=600&q=75" alt="Bedroom"/><div class="room-lbl">Bedroom</div></div>
+            <div class="room-card" onclick="showRoom('kitchen')"><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=75" alt="Kitchen"/><div class="room-lbl">Kitchen & Dining</div></div>
+            <div class="room-card" onclick="showRoom('bathroom')"><img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&q=75" alt="Bathroom"/><div class="room-lbl">Bathroom</div></div>
+            <div class="room-card" onclick="showRoom('desk')"><img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=600&q=75" alt="Desk"/><div class="room-lbl">Desk & Study</div></div>
+            <div class="room-card" onclick="showRoom('entryway')"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=75" alt="Entryway"/><div class="room-lbl">Entryway</div></div>
+          </div>
+        </div>
+      </section>
+      <section class="section section-warm">
+        <div class="container">
+          <div class="sec-head"><h2>Featured Finds</h2><p>Our most-loved pieces this season.</p></div>
+          <div class="prod-grid" id="home-products"></div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container">
+          <div class="about-layout">
+            <div class="about-img"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=700&q=80" alt="Styled apartment"/></div>
+            <div class="about-txt">
+              <p class="eyebrow">Our story</p>
+              <h2>Decorating is self-expression, not a budget line.</h2>
+              <p>Decromy was born out of frustration — endless scrolling through big-box stores searching for things that actually felt like <em>home</em>.</p>
+              <p>We curate pieces we genuinely love so your apartment feels intentional, not improvised. Every product links directly to Amazon or other trusted retailers.</p>
+              <button class="btn-s" onclick="showPage('shop')" style="margin-top:12px;">Browse the Collection</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="nl-sec"><div class="container nl-inner">
+        <div><h2>Get cozy in your inbox.</h2><p>New finds, seasonal ideas, and apartment tips — delivered gently.</p></div>
+        <div id="nl-home-wrap" class="nl-form"><input type="email" id="nl-home-input" placeholder="your@email.com"/><button class="btn-p" onclick="submitNL('home')">Subscribe</button></div>
+      </div></div>
+      <footer class="ft">
+        <div class="container ft-inner">
+          <div class="ft-brand"><span class="logo">Decromy</span><p>Curated apartment décor for every style and budget.</p></div>
+          <div class="ft-col"><h4>Shop</h4><button onclick="showRoom('living')">Living Room</button><button onclick="showRoom('bedroom')">Bedroom</button><button onclick="showRoom('kitchen')">Kitchen & Dining</button><button onclick="showRoom('bathroom')">Bathroom</button></div>
+          <div class="ft-col"><h4>Info</h4><button onclick="showPage('blog')">Décor Tips</button><button onclick="showPage('about')">About</button><button>Privacy Policy</button><button>Affiliate Disclosure</button></div>
+        </div>
+        <div class="ft-bot"><p>&copy; 2026 Decromy. All rights reserved. Prices subject to change on Amazon.</p></div>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<!-- SHOP -->
+<div id="page-shop" class="page">
+  <div class="room-hero"><p class="eyebrow">Browse</p><h1 id="shop-title">All Products</h1><p id="shop-desc">Every piece in our curated collection.</p></div>
+  <section class="section">
+    <div class="container">
+      <button class="back-btn" onclick="showPage('home')">&#8592; Back to Home</button>
+      <div class="filter-wrap" id="filter-wrap"></div>
+      <div class="prod-grid" id="shop-products"></div>
+    </div>
+  </section>
+  <div class="shop-another">
+    <div class="container">
+      <div class="sec-head"><h2>Shop Another Room</h2><p>Keep exploring — every space deserves a little love.</p></div>
+      <div class="shop-another-grid" id="shop-another-grid"></div>
+    </div>
+  </div>
+  <footer class="ft"><div class="ft-bot"><p>&copy; 2026 Decromy. All rights reserved.</p></div></footer>
+</div>
+
+<!-- BLOG -->
+<div id="page-blog" class="page">
+  <div style="background:var(--cream);padding:72px 0 48px;text-align:center;">
+    <p class="eyebrow">The Decromy Journal</p>
+    <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,56px);color:var(--esp);">Décor Tips & Inspiration</h1>
+  </div>
+  <section class="section"><div class="container"><div class="blog-grid">
+    <div class="blog-card"><div class="blog-img"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=75" alt=""/></div><div class="blog-body"><p class="blog-cat">Living Room</p><h3>5 Ways to Make a Small Living Room Feel Twice as Big</h3><p>Strategic mirrors, furniture scale, and lighting tricks that actually work in rental apartments.</p></div></div>
+    <div class="blog-card"><div class="blog-img"><img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=600&q=75" alt=""/></div><div class="blog-body"><p class="blog-cat">Bedroom</p><h3>The Art of Layering Bedding Without Going Overboard</h3><p>How to achieve that effortlessly cozy boutique hotel look with just three layers.</p></div></div>
+    <div class="blog-card"><div class="blog-img"><img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=600&q=75" alt=""/></div><div class="blog-body"><p class="blog-cat">Plants & Greenery</p><h3>Best Low-Maintenance Plants for Dark Apartments</h3><p>No south-facing windows? No problem. These thrive in low-light rentals.</p></div></div>
+    <div class="blog-card"><div class="blog-img"><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=75" alt=""/></div><div class="blog-body"><p class="blog-cat">Kitchen</p><h3>Rental Kitchen Upgrades That Cost Under $50</h3><p>Renter-friendly swaps that add warmth and personality without losing your deposit.</p></div></div>
+    <div class="blog-card"><div class="blog-img"><img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=600&q=75" alt=""/></div><div class="blog-body"><p class="blog-cat">Desk & Study</p><h3>How to Create a Productive Home Office in a Studio</h3><p>Carving out a calm focused workspace when your bedroom is also your office.</p></div></div>
+    <div class="blog-card"><div class="blog-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=75" alt=""/></div><div class="blog-body"><p class="blog-cat">Lighting</p><h3>Why Overhead Lighting Is Ruining Your Apartment</h3><p>Layered lighting is the single biggest upgrade — and cheaper than you think.</p></div></div>
+  </div></div></section>
+  <footer class="ft"><div class="ft-bot"><p>&copy; 2026 Decromy. All rights reserved.</p></div></footer>
+</div>
+
+<!-- ABOUT -->
+<div id="page-about" class="page">
+  <section class="section" style="padding-top:80px;"><div class="container"><div class="about-layout">
+    <div class="about-img"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=700&q=80" alt=""/></div>
+    <div class="about-txt">
+      <p class="eyebrow">Our story</p>
+      <h2>We believe every apartment deserves to feel like home.</h2>
+      <p>Decromy started as a personal hunt for pieces that felt warm and intentional — not mass-produced and forgettable.</p>
+      <p>We got tired of scrolling endlessly through big-box stores, so we built the shop we wished existed: a curated collection of apartment décor in earthy, cozy tones that actually work together.</p>
+      <p>All purchases go through Amazon or other trusted retailers so you get fast shipping, easy returns, and prices you trust.</p>
+      <button class="btn-p" onclick="showPage('shop')" style="margin-top:12px;">Shop the Collection</button>
+    </div>
+  </div></div></section>
+  <div class="nl-sec"><div class="container nl-inner">
+    <div><h2>Get cozy in your inbox.</h2><p>New finds, seasonal ideas, and apartment tips — delivered gently.</p></div>
+    <div id="nl-about-wrap" class="nl-form"><input type="email" id="nl-about-input" placeholder="your@email.com"/><button class="btn-p" onclick="submitNL('about')">Subscribe</button></div>
+  </div></div>
+  <footer class="ft"><div class="ft-bot"><p>&copy; 2026 Decromy. All rights reserved.</p></div></footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const PRODUCTS=[
+  {id:1,name:"Rattan Pendant Light",room:"living",roomLabel:"Living Room",price:"$48",desc:"Warm boho glow for any corner. Works beautifully over a reading nook.",badge:"Best Seller",img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=75",url:"https://www.amazon.com/?tag=YOUR-TAG-HERE"},
+  {id:2,name:"Chunky Knit Throw",room:"bedroom",roomLabel:"Bedroom",price:"$62",desc:"Handmade texture that layers beautifully on any sofa or bed.",badge:"Staff Pick",img:"https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&q=75",url:"https://www.amazon.com/?tag=YOUR-TAG-HERE"},
+  {id:3,name:"Terracotta Planter Set",room:"living",roomLabel:"Living Room",price:"$34",desc:"Set of 3 graduated pots. Perfect for succulents or trailing plants.",badge:null,img:"https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=400&q=75",url:"https://www.amazon.com/?tag=YOUR-TAG-HERE"},
+  {id:4,name:"Linen Duvet Cover",room:"bedroom",roomLabel:"Bedroom",price:"$89",desc:"Stone-washed linen in warm sand. Gets softer with every wash.",badge:"New",img:"https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&q=75",url:"https://www.amazon.com/?tag=YOUR-TAG-HERE"},
+  {id:5,name:"Woven Seagrass Basket",room:"living",roomLabel:"Living Room",price:"$29",desc:"Storage that doubles as décor. Holds blankets, toys, or plants.",badge:null,img:"https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&q=75",url:"https://www.amazon.com/?tag=YOUR-TAG-HERE"},
+  {id:6,name:"Ceramic Table Lamp",room:"bedroom",roomLabel:"Bedroom",price:"$74",desc:"Matte earth-tone ceramic with a linen shade. Warm evening light.",badge:"Staff Pick",img:"https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400&q=75",url:"https://www.amazon.com/?tag=YOUR-TAG-HERE"},
+  {id:7,name:"Arched Wood Mirror",room:"entryway",roomLabel:"Entryway",price:"$55",desc:"Makes small spaces feel open and airy. Walnut-finish frame.",badge:null,img:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=75",url:"https://www.amazon.com/?tag=YOUR-TAG-HERE"},
+  {id:8,name:"Bamboo Desk Organizer",room:"desk",roomLabel:"Desk & Study",price:"$26",desc:"Keeps your workspace calm and clear. Holds pens, notes, and more.",badge:"New",img:"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&q=75",url:"https://www.amazon.com/?tag=YOUR-TAG-HERE"},
+  {id:9,name:"Macramé Wall Hanging",room:"bedroom",roomLabel:"Bedroom",price:"$38",desc:"Handcrafted cotton rope art. Adds instant texture to bare walls.",badge:null,img:"https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=400&q=75",url:"https://www.amazon.com/?tag=YOUR-TAG-HERE"},
+  {id:10,name:"Jute Area Rug 5x8",room:"living",roomLabel:"Living Room",price:"$120",desc:"Natural jute weave. Grounds a seating area with earthy warmth.",badge:"Best Seller",img:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=75",url:"https://www.amazon.com/?tag=YOUR-TAG-HERE"},
+  {id:11,name:"Teak Bath Tray",room:"bathroom",roomLabel:"Bathroom",price:"$32",desc:"Water-resistant teak shelf tray. Elevates your bathtub instantly.",badge:null,img:"https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=75",url:"https://www.amazon.com/?tag=YOUR-TAG-HERE"},
+  {id:12,name:"Linen Shower Curtain",room:"bathroom",roomLabel:"Bathroom",price:"$42",desc:"Textured waffle weave. Instantly upgrades any apartment bathroom.",badge:"New",img:"https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=75",url:"https://www.amazon.com/?tag=YOUR-TAG-HERE"},
+  {id:13,name:"Floating Kitchen Shelf",room:"kitchen",roomLabel:"Kitchen & Dining",price:"$52",desc:"Live-edge walnut shelf. Perfect for herbs, oils, and small plants.",badge:"Staff Pick",img:"https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=75",url:"https://www.amazon.com/?tag=YOUR-TAG-HERE"},
+  {id:14,name:"Sage Linen Curtains",room:"living",roomLabel:"Living Room",price:"$68",desc:"Floor-length linen panels in muted sage. Soft natural light filter.",badge:null,img:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=75",url:"https://www.amazon.com/?tag=YOUR-TAG-HERE"},
+  {id:15,name:"Entryway Coat Hooks",room:"entryway",roomLabel:"Entryway",price:"$36",desc:"Solid wood pegs on a walnut backboard. Installs in minutes.",badge:null,img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=75",url:"https://www.amazon.com/?tag=YOUR-TAG-HERE"},
+  {id:16,name:"Minimalist Wall Clock",room:"living",roomLabel:"Living Room",price:"$44",desc:"Silent sweep mechanism. Clean lines in matte walnut and brass.",badge:null,img:"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=75",url:"https://www.amazon.com/?tag=YOUR-TAG-HERE"},
+];
+const ROOMS={all:{label:"All Products",desc:"Every piece in our curated collection."},living:{label:"Living Room",desc:"Cozy gathering spaces that feel intentional, not staged."},bedroom:{label:"Bedroom",desc:"Your sanctuary. Soft textures, warm light, total peace."},kitchen:{label:"Kitchen & Dining",desc:"Small touches that make cooking and gathering feel special."},bathroom:{label:"Bathroom",desc:"Spa-like calm in even the tiniest apartment bathroom."},desk:{label:"Desk & Study",desc:"A workspace that actually makes you want to sit down."},entryway:{label:"Entryway",desc:"First impressions, warmly made."}};
+let currentRoom='all';
+function card(p){return`<div class="prod-card"><div class="prod-img"><img src="${p.img}" alt="${p.name}" loading="lazy"/>${p.badge?`<span class="badge">${p.badge}</span>`:''}</div><div class="prod-info"><p class="prod-room">${p.roomLabel}</p><h3 class="prod-name">${p.name}</h3><p class="prod-desc">${p.desc}</p><div class="prod-foot"><span class="prod-price">${p.price}</span><button class="btn-shop" onclick="window.open('${p.url}','_blank')">Shop on Amazon</button></div></div></div>`;}
+function showPage(page){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-links button').forEach(b=>b.classList.remove('active'));document.getElementById('page-'+page).classList.add('active');const nb=document.getElementById('nav-'+page);if(nb)nb.classList.add('active');window.scrollTo(0,0);if(page==='shop')renderShop(currentRoom);}
+function showRoom(roomKey){currentRoom=roomKey;showPage('shop');renderShop(roomKey);}
+function renderShop(roomKey){const list=roomKey==='all'?PRODUCTS:PRODUCTS.filter(p=>p.room===roomKey);document.getElementById('shop-products').innerHTML=list.map(card).join('');document.getElementById('shop-title').textContent=ROOMS[roomKey]?.label||'Shop';document.getElementById('shop-desc').textContent=ROOMS[roomKey]?.desc||'';document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.room===roomKey));currentRoom=roomKey;renderShopAnother(roomKey);}
+function renderShopAnother(currentKey){const rooms=[{key:'living',label:'Living Room',img:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=75'},{key:'bedroom',label:'Bedroom',img:'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=600&q=75'},{key:'kitchen',label:'Kitchen & Dining',img:'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=75'},{key:'bathroom',label:'Bathroom',img:'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&q=75'},{key:'desk',label:'Desk & Study',img:'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=600&q=75'},{key:'entryway',label:'Entryway',img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=75'}];const others=currentKey==='all'?rooms:rooms.filter(r=>r.key!==currentKey);document.getElementById('shop-another-grid').innerHTML=others.map(r=>`<div class="shop-another-card" onclick="renderShop('${r.key}');window.scrollTo(0,0)"><img src="${r.img}" alt="${r.label}" loading="lazy"/><div class="shop-another-lbl">${r.label}</div></div>`).join('');}
+function buildFilters(){document.getElementById('filter-wrap').innerHTML=Object.entries(ROOMS).map(([k,v])=>`<button class="filter-btn${k==='all'?' active':''}" data-room="${k}" onclick="renderShop('${k}')">${v.label}</button>`).join('');}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+function submitNL(which){const input=document.getElementById('nl-'+which+'-input');if(!input||!input.value.includes('@')){showToast('Please enter a valid email.');return;}document.getElementById('nl-'+which+'-wrap').innerHTML='<p class="nl-success">&#10003; You\'re in! Welcome to Decromy.</p>';}
+function toggleMobile(){document.getElementById('mobileNav').classList.toggle('open');}
+document.getElementById('home-products').innerHTML=PRODUCTS.slice(0,8).map(card).join('');
+buildFilters();renderShop('all');
+</script>
+</body>
+</html>
