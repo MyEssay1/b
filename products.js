@@ -103,7 +103,7 @@ const PRODUCTS = [
     affiliateUrl: "https://www.amazon.com/?tag=YOUR-TAG-HERE"
   },
   {
-    id: 1,
+    id: 13,
     name: "Light fixture",
     room: "living",
     roomLabel: "bedroom",
