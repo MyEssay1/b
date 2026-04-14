@@ -102,7 +102,17 @@ const PRODUCTS = [
     image: "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&q=75",
     affiliateUrl: "https://www.amazon.com/?tag=YOUR-TAG-HERE"
   },
-
+  {
+    id: 1,
+    name: "Light fixture",
+    room: "living",
+    roomLabel: "bedroom",
+    price: "$48",
+    description: "Warm boho glow for any corner. Works beautifully over a reading nook.",
+    badge: "Best Seller",
+    image: "https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_16x9.jpg?w=1200",
+    affiliateUrl: "https://www.amazon.com/?tag=YOUR-TAG-HERE"
+  },
   /* ---- BEDROOM EXTRAS ---- */
   {
     id: 9,
