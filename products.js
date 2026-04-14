@@ -20,7 +20,7 @@ const PRODUCTS = [
     room: "living",
     roomLabel: "Living Room",
     price: "$48",
-    description: "Warm boho glow for any corner. Works beautifully over a reading nook.",
+    description: "arm boho glow for any corner. Works beautifully over a reading nook.",
     badge: "Best Seller",
     image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=75",
     affiliateUrl: "https://www.amazon.com/?tag=YOUR-TAG-HERE"
