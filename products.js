@@ -105,8 +105,8 @@ const PRODUCTS = [
   {
     id: 13,
     name: "Light fixture",
-    room: "living",
-    roomLabel: "bedroom",
+    room: "bedroom",
+    roomLabel: "Bedroom",
     price: "$48",
     description: "Warm boho glow for any corner. Works beautifully over a reading nook.",
     badge: "Best Seller",
